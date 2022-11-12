@@ -1,0 +1,17 @@
+*.swp
+.DS_Store
+/test/logs
+logs/*
+compile/linux
+compile/cron_linux
+compile/cron_unix
+compile/unix
+fugu
+.env
+config/conf.json
+vendor
+.vscode
+__debug_bin
+.idea
+chain_0.db
+chain_game

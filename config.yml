@@ -1,0 +1,21 @@
+server:
+  host: 0.0.0.0
+  service_name: "chain"
+  port: 80
+  #mode =debug / release / test
+  mode: "debug"
+
+#链存储
+datastore:
+  db_store: "./"
+
+wallet:
+  wallet_bucket: "address"
+  word_path: "./word/chinese_mnemonic_world.txt"
+
+network:
+  listen_address: "/ip4/0.0.0.0/tcp/9000"
+  bootstrap_peers: ""
+
+rpc_service: 
+  port: ":8080"

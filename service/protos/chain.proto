@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Chain{
+    rpc Version(VersionRequest) returns (VersionResponse) {}
+}
+
+message VersionRequest {
+    string name = 1;
+    int32 age = 2;
+}
+message VersionResponse {
+    string version = 1;
+}
