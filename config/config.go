@@ -39,7 +39,8 @@ type StoreConfig struct {
 
 // RPCConfig rpc config
 type RPCConfig struct {
-	Port string `yaml:"port"`
+	Port    string `yaml:"port"`
+	Address string `yaml:"address"`
 }
 
 // WalletConfig 钱包

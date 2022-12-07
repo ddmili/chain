@@ -5,6 +5,8 @@ import (
 	"chain/internal/log"
 	"net"
 
+	"chain/service/pd"
+
 	grpc "google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -19,7 +21,7 @@ func GrpcServer(bc *ChainService, lg log.Logger, cg *config.Config) error {
 	// 创建 RPC 服务容器
 	grpcServer := grpc.NewServer()
 
-	RegisterChainServer(grpcServer, bc)
+	pd.RegisterChainServer(grpcServer, bc)
 
 	reflection.Register(grpcServer)
 

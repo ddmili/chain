@@ -2,6 +2,7 @@ package main
 
 import (
 	"chain/chain"
+	"chain/client"
 	"chain/cmd"
 	"chain/config"
 	"chain/internal/log"
@@ -9,6 +10,7 @@ import (
 	"chain/internal/wallet"
 	"chain/p2p"
 	"chain/service"
+	"context"
 
 	"go.uber.org/fx"
 )
@@ -20,8 +22,10 @@ var (
 )
 
 func main() {
-	// var tt *chain.Blockchain
+	ctx, cancel := context.WithCancel(context.Background())
+
 	opts := []fx.Option{}
+	opts = append(opts, fx.Provide(ctx, cancel))
 	opts = append(opts,
 		fx.Provide(config.NewCg),
 		fx.Provide(log.NewLogger),
@@ -30,9 +34,12 @@ func main() {
 		fx.Provide(wallet.NewWallets),
 		fx.Provide(chain.NewBlockchain),
 		fx.Provide(service.NewChainService),
+		fx.Provide(client.NewChainClient),
 		fx.Invoke(setVersion),
+		// fx.NopLogger,
 	)
 	opts = append(opts, cmd.Execute()...)
+
 	fx.New(opts...)
 
 }

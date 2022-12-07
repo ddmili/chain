@@ -9,6 +9,7 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"encoding/gob"
+	"fmt"
 	"math/big"
 	"os"
 )
@@ -72,8 +73,8 @@ func (w *Wallet) GetPrivateKey() string {
 	return string(util.Base58Encode(priKey))
 }
 
-// getAddress 通过公钥获得地址
-func (b *Wallet) getAddress() []byte {
+// GetAddress 通过公钥获得地址
+func (b *Wallet) GetAddress() []byte {
 	//1.ripemd160(sha256(publicKey))
 	ripPubKey := util.GeneratePublicKeyHash(b.PublicKey)
 	//2.最前面添加一个字节的版本信息获得 versionPublicKeyHash
@@ -106,6 +107,7 @@ func (v *Wallet) Deserialize(d []byte) {
 	gob.Register(elliptic.P256())
 	err := decoder.Decode(v)
 	if err != nil {
+		fmt.Printf(err.Error())
 		log.Panic("Deserialize error: %s", err)
 	}
 }
@@ -116,7 +118,7 @@ func GetAddressFromPublicKey(publicKey []byte) string {
 		return ""
 	}
 	b := Wallet{PublicKey: publicKey}
-	return string(b.getAddress())
+	return string(b.GetAddress())
 }
 
 func paddedAppend(size uint, dst, src []byte) []byte {

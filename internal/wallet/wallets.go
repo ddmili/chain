@@ -7,6 +7,8 @@ import (
 	"errors"
 )
 
+const walletListKey = "wallet_list"
+
 // Wallets 钱包
 type Wallets struct {
 	bd     *store.BlockchainDB
@@ -33,6 +35,18 @@ func (w *Wallets) GetWallet(address string) (*Wallet, error) {
 	return nil, errors.New("wallet bucket not exist")
 }
 
+// GetAllWallet 获取全部钱包
+func (w *Wallets) GetAllWallet() []*Wallet {
+	list := []*Wallet{}
+	w.bd.AllData(w.bucket, func(data []byte) {
+		tmp := &Wallet{}
+		tmp.Deserialize(data)
+		list = append(list, tmp)
+	})
+
+	return list
+}
+
 // GenerateWallet 创建公私钥实例
 func GenerateWallet(wordPath string) *Wallet {
 	b := &Wallet{nil, nil, nil}
@@ -48,7 +62,7 @@ func (w *Wallets) GenerateWallet() (address, privKey, mnemonicWord string) {
 		log.Fatal("创建钱包失败，检查助记词是否符合创建规则！")
 	}
 	privKey = wallet.GetPrivateKey()
-	addressByte := wallet.getAddress()
+	addressByte := wallet.GetAddress()
 	w.storage(addressByte, wallet)
 	//将地址存入实例
 	address = string(addressByte)

@@ -55,10 +55,33 @@ func (s *BlockchainDB) View(k []byte, bt BucketType) []byte {
 	if err != nil {
 		return nil
 	}
-	//不再次赋值的话，返回值会报错，不知道狗日的啥意思
 	realResult := make([]byte, len(result))
 	copy(realResult, result)
 	return realResult
+}
+
+// AllData a bucket all data
+func (s *BlockchainDB) AllData(bt BucketType, cb func([]byte)) {
+	db, err := bolt.Open(s.DBFileName(), 0600, nil)
+	defer db.Close()
+	if err != nil {
+		log.Panic("db error: %s", err)
+	}
+
+	err = db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(bt))
+		if bucket == nil {
+			return errors.New("db error:" + string(bt))
+		}
+
+		c := bucket.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			cb(v)
+		}
+
+		return nil
+	})
 }
 
 // Delete 删除数据

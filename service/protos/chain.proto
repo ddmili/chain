@@ -2,12 +2,16 @@ syntax = "proto3";
 
 service Chain{
     rpc Version(VersionRequest) returns (VersionResponse) {}
+    rpc WalletList(WalletListRequest) returns (WalletListResponse) {}
 }
 
-message VersionRequest {
-    string name = 1;
-    int32 age = 2;
-}
+message VersionRequest {}
 message VersionResponse {
     string version = 1;
+}
+
+
+message WalletListRequest {}
+message WalletListResponse {
+    string address = 1;
 }

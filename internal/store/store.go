@@ -74,8 +74,3 @@ func (s BlockchainDB) IsBucketExist(bt BucketType) bool {
 	}
 	return isBucketExist
 }
-
-// InitStore 初始化存储
-func InitStore() {
-
-}
